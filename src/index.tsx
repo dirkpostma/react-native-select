@@ -1,7 +1,10 @@
-export function multiply(a: number, b: number): Promise<number> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(a * b);
-    }, 2000);
-  });
-}
+import React from 'react';
+import { Text, View } from 'react-native';
+
+export const Select = () => {
+  return (
+    <View>
+      <Text>Placeholder for Select component</Text>
+    </View>
+  );
+};

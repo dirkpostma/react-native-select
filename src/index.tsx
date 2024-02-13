@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { Pressable } from 'react-native';
-import { Text } from 'react-native';
 
 interface Props<T> {
   items: T[];
   keyExtractor: (item: T) => string | number;
   labelExtractor: (item: T) => string;
   onSelect: (selectedItems: T[]) => void;
+  renderItem: (props: RenderItemProps) => React.ReactNode;
+}
+
+interface RenderItemProps {
+  key: string | number;
+  label: string;
+  onPress: () => void;
+  selected: boolean;
 }
 
 export const Select = <T,>({
@@ -15,6 +20,7 @@ export const Select = <T,>({
   keyExtractor,
   labelExtractor,
   onSelect,
+  renderItem,
 }: Props<T>) => {
   const [selectedItems, setSelectedItems] = useState<T[]>([]);
 
@@ -35,34 +41,16 @@ export const Select = <T,>({
 
   return (
     <>
-      {items.map((item) => (
-        <Pressable
-          key={keyExtractor(item)}
-          style={styles.item}
-          onPress={() => toggleItem(item)}
-        >
-          <Text>
-            {selectedItems.some(
-              (selectedItem) =>
-                keyExtractor(selectedItem) === keyExtractor(item)
-            )
-              ? '✅ '
-              : '🔲 '}
-
-            {labelExtractor(item)}
-          </Text>
-        </Pressable>
-      ))}
+      {items.map((item) =>
+        renderItem({
+          key: keyExtractor(item),
+          label: labelExtractor(item),
+          onPress: () => toggleItem(item),
+          selected: selectedItems.some(
+            (selectedItem) => keyExtractor(selectedItem) === keyExtractor(item)
+          ),
+        })
+      )}
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    padding: 16,
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: 'lightgray',
-    marginBottom: 8,
-  },
-});

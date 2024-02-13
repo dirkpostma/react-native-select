@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { Select } from 'react-native-select';
 
 interface Person {
@@ -25,6 +25,13 @@ export const App = () => {
           keyExtractor={(person) => person.id}
           labelExtractor={(person) => person.name}
           onSelect={setSelectedPeople}
+          renderItem={({ key, label, onPress, selected }) => (
+            <Pressable key={key} style={styles.item} onPress={onPress}>
+              <Text>
+                {selected ? '✅ ' : '🔲 '} {label}
+              </Text>
+            </Pressable>
+          )}
         />
 
         <View>
@@ -41,6 +48,13 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 16,
+  },
+  item: {
+    padding: 16,
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: 'lightgray',
+    marginBottom: 8,
   },
 });
 

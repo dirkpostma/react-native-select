@@ -1,5 +1,5 @@
 {
-  "name": "react-native-select",
+  "name": "@dirkpostma/react-native-select",
   "version": "0.1.0",
   "description": "select library for react native",
   "main": "lib/commonjs/index",

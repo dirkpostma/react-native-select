@@ -2,7 +2,7 @@
 
 Component to select items from a list for React Native. The input can be a list of any type of objects.
 
-![Project Screenshot](/screenshots/example.png "Project Screenshot")
+<img src="/screenshots/example.png" width="320" alt="Project Screenshot">
 
 ## Installation
 

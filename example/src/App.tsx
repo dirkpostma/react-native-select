@@ -20,12 +20,15 @@ const people: Person[] = [
   { id: 2, name: 'Alice' },
 ];
 
+const defaultSelectedKeys = [2];
+
 export const App = () => {
   const [isMultiSelect, setIsMultiSelect] = useState(true);
-  const [selectedPeople, setSelectedPeople] = useState<Person[]>([]);
+  const [submitOnSelect, setSubmitOnSelect] = useState(true);
+  const [selectedPeopleKeys, setSelectedPeopleKeys] = useState<number[]>([]);
 
   useEffect(() => {
-    setSelectedPeople([]);
+    setSelectedPeopleKeys(defaultSelectedKeys);
   }, [isMultiSelect]);
 
   return (
@@ -33,14 +36,22 @@ export const App = () => {
       <View style={styles.container}>
         <Text style={styles.title}>Multiselect?</Text>
         <Switch value={isMultiSelect} onValueChange={setIsMultiSelect} />
+        <Text style={styles.title}>submitOnSelect?</Text>
+        <Switch
+          value={submitOnSelect}
+          onValueChange={setSubmitOnSelect}
+          disabled={isMultiSelect}
+        />
         <Text style={styles.title}>Select people:</Text>
         <View>
           <Select
             items={people}
             keyExtractor={(person) => person.id}
-            labelExtractor={(person) => person.name}
-            onSelect={setSelectedPeople}
+            labelExtractor={(person) => `${person.name} (${person.id})`}
+            onSubmit={setSelectedPeopleKeys}
+            defaultSelectedKeys={defaultSelectedKeys}
             multiselect={isMultiSelect}
+            submitOnSelect={submitOnSelect}
             renderItem={({ key, label, onPress, selected }) => (
               <Pressable
                 key={key}
@@ -56,7 +67,7 @@ export const App = () => {
         </View>
 
         <View>
-          <Text>{JSON.stringify(selectedPeople, null, 2)}</Text>
+          <Text>{JSON.stringify(selectedPeopleKeys)}</Text>
         </View>
       </View>
     </SafeAreaView>

@@ -6,6 +6,7 @@ interface Props<T> {
   labelExtractor: (item: T) => string;
   onSelect: (selectedItems: T[]) => void;
   renderItem: (props: RenderItemProps) => React.ReactNode;
+  multiselect: boolean;
 }
 
 interface RenderItemProps {
@@ -21,6 +22,7 @@ export const Select = <T,>({
   labelExtractor,
   onSelect,
   renderItem,
+  multiselect = false,
 }: Props<T>) => {
   const [selectedItems, setSelectedItems] = useState<T[]>([]);
 
@@ -29,11 +31,16 @@ export const Select = <T,>({
       (selectedItem) => keyExtractor(selectedItem) === keyExtractor(item)
     );
 
-    const newSelectedItems = isSelected
-      ? selectedItems.filter(
-          (selectedItem) => keyExtractor(selectedItem) !== keyExtractor(item)
-        )
-      : [...selectedItems, item];
+    let newSelectedItems;
+    if (!multiselect) {
+      newSelectedItems = isSelected ? [] : [item];
+    } else {
+      newSelectedItems = isSelected
+        ? selectedItems.filter(
+            (selectedItem) => keyExtractor(selectedItem) !== keyExtractor(item)
+          )
+        : [...selectedItems, item];
+    }
 
     setSelectedItems(newSelectedItems);
     onSelect(newSelectedItems);

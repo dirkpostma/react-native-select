@@ -13,9 +13,8 @@ npm install @dirkpostma/react-native-select
 ## Usage
 
 ```js
-import { Select } from '@dirkpostma/react-native-select';
-
-// ...
+import React, { useState } from 'react';
+import Select from '@dirkpostma/react-native-select'; 
 
 interface Person {
   id: number;
@@ -27,21 +26,56 @@ const people: Person[] = [
   { id: 2, name: 'Alice' },
 ];
 
-// ...
+const App = () => {
+  const [selectedPeople, setSelectedPeople] = useState<Person[]>([]);
 
-<Select
-    items={people}
-    keyExtractor={(person) => person.id}
-    labelExtractor={(person) => person.name}
-    onSelect={setSelectedPeople}
-    renderItem={({ key, label, onPress, selected }) => (
-        <Pressable key={key} onPress={onPress}>
-            <Text>{selected ? '✅ ' : '🔲 '} {label}</Text>
+  return (
+    <Select
+      items={people}
+      keyExtractor={(person) => person.id}
+      labelExtractor={(person) => person.name}
+      onSelect={setSelectedPeople}
+      multiselect={true}
+      renderItem={({ key, label, onPress, selected }) => (
+        <Pressable
+          key={key}
+          onPress={onPress}
+          style={{ 
+            padding: 10, 
+            borderBottomWidth: 1,
+            borderColor: selected ? 'blue' : 'lightgray'
+          }}
+        >
+          <Text>{label}</Text>
         </Pressable>
-    )}
-/>
+      )}
+    />
+  );
+};
 
 ```
+
+## Properties
+
+| Property          | Type                     | Required | Description                                                                                                                 |
+| ----------------- | ------------------------ | -------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `items`           | T[]                      | Yes      | An array of objects representing the selectable options.                                                                    |
+| `keyExtractor`    | (item: T) => string \| number  | Yes      | A function used to extract a unique key for each item in the list.                                                         |
+| `labelExtractor`  | (item: T) => string        | Yes      | A function to extract the label to be displayed for each item.                                                             |
+| `onSelect`        | (selectedItems: T[]) => void | Yes      | A callback function invoked when the selection changes. Provides an array of the currently selected items.                     |
+| `renderItem`      | (props: RenderItemProps) => React.ReactNode | Yes      | A function that renders each item in the list. See below for `RenderItemProps` details.                                    |
+| `multiselect`     | boolean                      | No       | Determines whether the select component allows single-select (default: `false`) or multi-select behavior.                     |
+
+**`RenderItemProps` Interface**
+
+| Property  | Type          | Description                                               |
+| --------- | ------------- | --------------------------------------------------------- |
+| `key`     | string \| number | The unique key of the item being rendered.                |
+| `label`   | string        | The display label of the item.                            |
+| `onPress` | () => void    | Function to be called when the item is pressed or selected. |
+| `selected`| boolean       | Indicates whether the item is currently selected.          |
+
+
 
 ## Contributing
 

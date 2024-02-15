@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import {
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Switch,
+  Text,
+  View,
+} from 'react-native';
 import { Select } from '@dirkpostma/react-native-select';
 
 interface Person {
@@ -14,25 +21,39 @@ const people: Person[] = [
 ];
 
 export const App = () => {
+  const [isMultiSelect, setIsMultiSelect] = useState(true);
   const [selectedPeople, setSelectedPeople] = useState<Person[]>([]);
+
+  useEffect(() => {
+    setSelectedPeople([]);
+  }, [isMultiSelect]);
 
   return (
     <SafeAreaView>
       <View style={styles.container}>
+        <Text style={styles.title}>Multiselect?</Text>
+        <Switch value={isMultiSelect} onValueChange={setIsMultiSelect} />
         <Text style={styles.title}>Select people:</Text>
-        <Select
-          items={people}
-          keyExtractor={(person) => person.id}
-          labelExtractor={(person) => person.name}
-          onSelect={setSelectedPeople}
-          renderItem={({ key, label, onPress, selected }) => (
-            <Pressable key={key} style={styles.item} onPress={onPress}>
-              <Text>
-                {selected ? '✅ ' : '🔲 '} {label}
-              </Text>
-            </Pressable>
-          )}
-        />
+        <View>
+          <Select
+            items={people}
+            keyExtractor={(person) => person.id}
+            labelExtractor={(person) => person.name}
+            onSelect={setSelectedPeople}
+            multiselect={isMultiSelect}
+            renderItem={({ key, label, onPress, selected }) => (
+              <Pressable
+                key={key}
+                style={[styles.item, selected && styles.selectedItem]}
+                onPress={onPress}
+              >
+                <Text>
+                  {selected ? '✅ ' : '🔲 '} {label}
+                </Text>
+              </Pressable>
+            )}
+          />
+        </View>
 
         <View>
           <Text>{JSON.stringify(selectedPeople, null, 2)}</Text>
@@ -48,6 +69,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 16,
+    gap: 16,
   },
   item: {
     padding: 16,
@@ -55,6 +77,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: 'lightgray',
     marginBottom: 8,
+  },
+  selectedItem: {
+    borderColor: 'gray',
   },
 });
 

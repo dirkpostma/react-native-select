@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { Select } from 'react-native-select';
+import { Select } from '@dirkpostma/react-native-select';
 
 interface Person {
   id: number;

@@ -1,17 +1,17 @@
-# react-native-select
+# @dirkpostma/react-native-select
 
 Component to select items from a list for React Native. The input can be a list of any type of objects.
 
 ## Installation
 
 ```sh
-npm install react-native-select
+npm install @dirkpostma/react-native-select
 ```
 
 ## Usage
 
 ```js
-import { Select } from 'react-native-select';
+import { Select } from '@dirkpostma/react-native-select';
 
 // ...
 
